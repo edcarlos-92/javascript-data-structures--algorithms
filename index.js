@@ -1,125 +1,31 @@
-class Node {
-  constructor(value) {
-    this.value = value;
-    this.left = null;
-    this.right = null;
-  }
+function ListNode(val) {
+  this.val = val;
+  this.next = null;
 }
 
-class BinarySearchTree {
-  constructor() {
-    this.root = null;
+var addTwoNumbers = function (l1, l2) {
+  let carry = 0;
+  let sum = 0;
+  let head = new ListNode(0);
+  let now = head;
+  let a = l1;
+  let b = l2;
+  while (a !== null || b !== null) {
+    sum = (a ? a.val : 0) + (b ? b.val : 0) + carry;
+    carry = Math.floor(sum / 10);
+    now.next = new ListNode(sum % 10);
+    now = now.next;
+    a = a ? a.next : null;
+    b = b ? b.next : null;
   }
-  insert(value) {
-    let newNode = new Node(value);
-    if (this.root === null) {
-      this.root = newNode;
-      return this;
-    }
-    let current = this.root;
-    while (true) {
-      if (value === current.value) return undefined;
-      if (value < current.value) {
-        if (current.left === null) {
-          current.left = newNode;
-          return this;
-        }
-        current = current.left;
-      } else {
-        if (current.right === null) {
-          current.right = newNode;
-          return this;
-        }
-        current = current.right;
-      }
-    }
-  }
-  find(value) {
-    if (this.root === null) return false;
-    let current = this.root,
-      found = false;
-    while (current && !found) {
-      if (value < current.value) {
-        current = current.left;
-      } else if (value > current.value) {
-        current = current.right;
-      } else {
-        found = true;
-      }
-    }
-    if (!found) return undefined;
-    return current;
-  }
-  contains(value) {
-    if (this.root === null) return false;
-    let current = this.root,
-      found = false;
-    while (current && !found) {
-      if (value < current.value) {
-        current = current.left;
-      } else if (value > current.value) {
-        current = current.right;
-      } else {
-        return true;
-      }
-    }
-    return false;
-  }
-  BFS() {
-    let node = this.root;
-    let data = [];
-    let queue = [];
-    queue.push(node);
+  if (carry) now.next = new ListNode(carry);
+  return head.next;
+};
 
-    while (queue.length) {
-      node = queue.shift();
-      data.push(node.value);
-      if (node.left) queue.push(node.left);
-      if (node.right) queue.push(node.right);
-    }
-    return data;
-  }
-  DFSPreOrder() {
-    let data = [];
-    function traverse(node) {
-      data.push(node.value);
-      if (node.left) traverse(node.left);
-      if (node.right) traverse(node.right);
-    }
-    traverse(this.root);
-    return data;
-  }
-  DFSPostOrder() {
-    let data = [];
-    function traverse(node) {
-      if (node.left) traverse(node.left);
-      if (node.right) traverse(node.right);
-      data.push(node.value);
-    }
-    traverse(this.root);
-    return data;
-  }
-  DFSInOrder() {
-    let data = [];
-    function traverse(node) {
-      if (node.left) traverse(node.left);
-      data.push(node.value);
-      if (node.right) traverse(node.right);
-    }
-    traverse(this.root);
-    return data;
-  }
-}
+let l1 = [2, 4, 3];
+let l2 = [5, 6, 4];
+console.log(addTwoNumbers(l1, l2));
 
-var tree = new BinarySearchTree();
-tree.insert(10);
-tree.insert(6);
-tree.insert(15);
-tree.insert(3);
-tree.insert(8);
-tree.insert(20);
-tree.DFSPreOrder();
-tree.DFSPostOrder();
-tree.DFSInOrder();
-
-console.log(tree);
+// console.log(addTwoNumbers(2, 5));
+// console.log(addTwoNumbers(4, 6));
+// console.log(addTwoNumbers(3, 4));
